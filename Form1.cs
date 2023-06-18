@@ -21,8 +21,8 @@ namespace PetsBook
 
         private void btnNewPet_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.Show();
+            autorization form = new autorization();
+            form.Show();
             this.Hide();
         }
     }

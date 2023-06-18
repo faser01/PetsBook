@@ -1,4 +1,6 @@
 ﻿using System.Data.SQLite;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace PetsBook
 {
@@ -34,6 +36,13 @@ namespace PetsBook
                 "Address TEXT NOT NULL, " +
                 "Phone TEXT NOT NULL)";
             command.ExecuteNonQuery();
+
+            command.CommandText = "CREATE TABLE IF NOT EXISTS users(  " +
+                "id INTEGER PRIMARY KEY,  " +
+                "username TEXT NOT NULL UNIQUE,  " +
+                "password TEXT NOT NULL)";
+            command.ExecuteNonQuery();
+
 
             // создание таблицы PetOwners
             command.CommandText = "CREATE TABLE IF NOT EXISTS PetOwners " +

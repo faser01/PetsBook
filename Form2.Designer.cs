@@ -206,7 +206,6 @@
             this.SaveButton.FlatAppearance.BorderSize = 0;
             this.SaveButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Purple;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveButton.Image = global::PetsBook.Properties.Resources.free_icon_save_2810401;
             this.SaveButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SaveButton.Location = new System.Drawing.Point(211, 164);
             this.SaveButton.Name = "SaveButton";
@@ -242,7 +241,7 @@
             this.Controls.Add(this.PetNameTextBox);
             this.Name = "Form2";
             this.Text = "Form2";
-            this.Load += new System.EventHandler(this.Form2_Load);
+         
             this.ResumeLayout(false);
             this.PerformLayout();
 

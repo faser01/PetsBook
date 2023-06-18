@@ -13,31 +13,40 @@ namespace PetsBook
 {
     public partial class autorization : Form
     {
+        
         public autorization()
         {
             InitializeComponent();
+            MyDatabase database = new MyDatabase();
+            database.CreateDatabaseIfNotExists();
+            StartPosition = FormStartPosition.CenterScreen;
+            txtPassword.PasswordChar = '●';
+            txtUsername.MaxLength = 50;
+            txtPassword.MaxLength = 50;
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+       
+
+        private void btnLogin_Click_1(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Please enter username and password");
+                MessageBox.Show("Пожалуйста, введите имя пользователя и пароль");
                 return;
             }
 
             if (password.Length < 6)
             {
-                MessageBox.Show("Password should be at least 6 characters long");
+                MessageBox.Show("Пароль должен быть не менее 6 символов");
                 return;
             }
 
             try
             {
-                using (var connection = new SQLiteConnection(@"Data Source=PetDiary.db;Version=3;"))
+                using (var connection = new SQLiteConnection(@"Data Source=PetsDiary.db;Version=3;"))
                 {
                     connection.Open();
 
@@ -48,7 +57,7 @@ namespace PetsBook
 
                     if (count > 0)
                     {
-                        MessageBox.Show("User with this username already exists");
+                        MessageBox.Show("Пользователь с таким именем уже существует");
                         return;
                     }
 
@@ -58,7 +67,7 @@ namespace PetsBook
 
                     command.ExecuteNonQuery();
 
-                    MessageBox.Show("User created successfully");
+                    MessageBox.Show("Пользователь успешно создан");
 
                     this.Close();
                 }
@@ -67,6 +76,9 @@ namespace PetsBook
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+            Form2 form2 = new Form2();
+            form2.Show();
+            this.Hide();
         }
     }
 }

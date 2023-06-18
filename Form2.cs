@@ -84,24 +84,7 @@ namespace PetsBook
             MessageBox.Show("Данные успешно сохранены");
         }
 
-        private void Form2_Load(object sender, EventArgs e)
-        {
-            // Установка фонового цвета кнопки
-            SaveButton.BackColor = Color.FromArgb(255, 128, 0);
-
-            // Установка цвета текста кнопки
-            SaveButton.ForeColor = Color.White;
-
-            // Установка шрифта текста кнопки
-            SaveButton.Font = new Font("Arial", 12, FontStyle.Bold);
-
-            // Установка изображения на кнопке
-            SaveButton.Image = Properties.Resources.save_icon;
-
-            // Установка выравнивания изображения и текста на кнопке
-            SaveButton.ImageAlign = ContentAlignment.MiddleLeft;
-            SaveButton.TextAlign = ContentAlignment.MiddleRight;
-        }
+       
     }
     
 }
