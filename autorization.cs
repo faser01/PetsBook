@@ -76,7 +76,7 @@ namespace PetsBook
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
-            Form2 form2 = new Form2();
+            Schedule form2 = new Schedule();
             form2.Show();
             this.Hide();
         }

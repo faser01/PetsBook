@@ -46,6 +46,8 @@
             this.MaleRadioButton = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.SaveButton = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // PetNameTextBox
@@ -68,7 +70,7 @@
             // AddressTextBox
             // 
             this.AddressTextBox.BackColor = System.Drawing.Color.PapayaWhip;
-            this.AddressTextBox.Location = new System.Drawing.Point(419, 80);
+            this.AddressTextBox.Location = new System.Drawing.Point(107, 206);
             this.AddressTextBox.Name = "AddressTextBox";
             this.AddressTextBox.Size = new System.Drawing.Size(100, 20);
             this.AddressTextBox.TabIndex = 5;
@@ -84,7 +86,7 @@
             // PhoneTextBox
             // 
             this.PhoneTextBox.BackColor = System.Drawing.Color.PapayaWhip;
-            this.PhoneTextBox.Location = new System.Drawing.Point(419, 115);
+            this.PhoneTextBox.Location = new System.Drawing.Point(357, 213);
             this.PhoneTextBox.Name = "PhoneTextBox";
             this.PhoneTextBox.Size = new System.Drawing.Size(100, 20);
             this.PhoneTextBox.TabIndex = 7;
@@ -92,7 +94,7 @@
             // OwnerNameTextBox
             // 
             this.OwnerNameTextBox.BackColor = System.Drawing.Color.PapayaWhip;
-            this.OwnerNameTextBox.Location = new System.Drawing.Point(419, 12);
+            this.OwnerNameTextBox.Location = new System.Drawing.Point(107, 168);
             this.OwnerNameTextBox.Name = "OwnerNameTextBox";
             this.OwnerNameTextBox.Size = new System.Drawing.Size(100, 20);
             this.OwnerNameTextBox.TabIndex = 8;
@@ -100,7 +102,7 @@
             // OwnerSurnameTextBox
             // 
             this.OwnerSurnameTextBox.BackColor = System.Drawing.Color.PapayaWhip;
-            this.OwnerSurnameTextBox.Location = new System.Drawing.Point(419, 48);
+            this.OwnerSurnameTextBox.Location = new System.Drawing.Point(357, 171);
             this.OwnerSurnameTextBox.Name = "OwnerSurnameTextBox";
             this.OwnerSurnameTextBox.Size = new System.Drawing.Size(100, 20);
             this.OwnerSurnameTextBox.TabIndex = 9;
@@ -144,7 +146,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(313, 19);
+            this.label5.Location = new System.Drawing.Point(28, 171);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 13);
             this.label5.TabIndex = 17;
@@ -153,7 +155,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(313, 118);
+            this.label6.Location = new System.Drawing.Point(238, 213);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(91, 13);
             this.label6.TabIndex = 18;
@@ -162,7 +164,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(315, 85);
+            this.label7.Location = new System.Drawing.Point(20, 209);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(81, 13);
             this.label7.TabIndex = 19;
@@ -171,7 +173,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(312, 51);
+            this.label8.Location = new System.Drawing.Point(238, 175);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(100, 13);
             this.label8.TabIndex = 20;
@@ -207,7 +209,7 @@
             this.SaveButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Purple;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.SaveButton.Location = new System.Drawing.Point(211, 164);
+            this.SaveButton.Location = new System.Drawing.Point(211, 243);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(137, 37);
             this.SaveButton.TabIndex = 12;
@@ -215,12 +217,22 @@
             this.SaveButton.UseVisualStyleBackColor = false;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(328, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(170, 128);
+            this.pictureBox1.TabIndex = 23;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGoldenrodYellow;
-            this.ClientSize = new System.Drawing.Size(572, 231);
+            this.ClientSize = new System.Drawing.Size(572, 292);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.MaleRadioButton);
             this.Controls.Add(this.label8);
@@ -241,7 +253,7 @@
             this.Controls.Add(this.PetNameTextBox);
             this.Name = "Form2";
             this.Text = "Form2";
-         
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,5 +278,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.RadioButton MaleRadioButton;
         private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

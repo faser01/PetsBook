@@ -84,7 +84,19 @@ namespace PetsBook
             MessageBox.Show("Данные успешно сохранены");
         }
 
-       
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.Title = "Выберите фотографию";
+            openFileDialog.Filter = "Файлы изображений (.jpg, *.jpeg, *.png)|.jpg;.jpeg;.png";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                pictureBox1.Image = Image.FromFile(openFileDialog.FileName);
+            }
+        }
     }
     
 }

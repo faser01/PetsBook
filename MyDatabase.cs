@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -25,7 +26,25 @@ namespace PetsBook
                 "Name TEXT NOT NULL, " +
                 "Breed TEXT NOT NULL, " +
                 "DateOfBirth DATETIME NOT NULL, " +
-                "Gender TEXT NOT NULL)";
+                "Gender TEXT NOT NULL, " +
+                "OwnerId INTEGER NOT NULL, " +
+                "FOREIGN KEY(OwnerId) REFERENCES Owners(Id))";
+            command.ExecuteNonQuery();
+
+            // создание таблицы расписания
+            command.CommandText = "CREATE TABLE IF NOT EXISTS Schedule(" +
+                  "Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                  "Type NVARCHAR(50) NOT NULL," +
+                  "DateAndTime DATETIME NOT NULL," +
+                  "PetId INT NOT NULL," +
+                  "FOREIGN KEY(PetId) REFERENCES Pets(Id))";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "CREATE TABLE IF NOT EXISTS PetPhotos (" +
+                 "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                 "PetID INTEGER NOT NULL," +
+                 "Photo BLOB NOT NULL," +
+                 "FOREIGN KEY (PetID) REFERENCES Pets(ID))";
             command.ExecuteNonQuery();
 
             // создание таблицы Owners
