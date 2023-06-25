@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace PetsBook
             txtUsername.MaxLength = 50;
             txtPassword.MaxLength = 50;
         }
+
+
 
       
         private async void btnLogin_Click_1(object sender, EventArgs e)
@@ -71,8 +74,9 @@ namespace PetsBook
 
                     MessageBox.Show($"Пользователь {inputUsername} успешно зарегистрирован.");
                     this.Hide();
-                    Form2 form2 = new Form2();
-                    form2.Show();
+                    int userId = 0;
+                    Form3 form3 = new Form3(new List<Pet>(), new List<Owner>(), new List<Notifications>(), database.connection, userId);
+                    form3.Show();
                 }
             }
             catch (Exception ex)

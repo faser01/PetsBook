@@ -9,8 +9,11 @@ namespace PetsBook
     public class MyDatabase
     {
         private SQLiteConnection _connection;
+
   
         public string connectionString = "Data Source=PetsDiary.db;Version=3;";
+        internal SQLiteConnection connection;
+
         public void CreateDatabaseIfNotExists()
         {// проверка на null
             if (_connection == null)
