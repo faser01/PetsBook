@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿
+using System;
 using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
@@ -13,11 +11,12 @@ namespace PetsBook
 {
     public partial class autorization : Form
     {
-        
+        private MyDatabase database;
+
         public autorization()
         {
             InitializeComponent();
-            MyDatabase database = new MyDatabase();
+            database = new MyDatabase();
             database.CreateDatabaseIfNotExists();
             StartPosition = FormStartPosition.CenterScreen;
             txtPassword.PasswordChar = '●';
@@ -25,60 +24,61 @@ namespace PetsBook
             txtPassword.MaxLength = 50;
         }
 
-       
-
-        private void btnLogin_Click_1(object sender, EventArgs e)
+      
+        private async void btnLogin_Click_1(object sender, EventArgs e)
         {
-            string username = txtUsername.Text;
-            string password = txtPassword.Text;
+            string inputUsername = txtUsername.Text;
+            string inputPassword = txtPassword.Text;
 
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrWhiteSpace(inputUsername) || string.IsNullOrWhiteSpace(inputPassword))
             {
-                MessageBox.Show("Пожалуйста, введите имя пользователя и пароль");
+                MessageBox.Show("Пожалуйста введите свой логин и пароль.");
                 return;
             }
 
-            if (password.Length < 6)
+            if (inputPassword.Length < 6)
             {
-                MessageBox.Show("Пароль должен быть не менее 6 символов");
+                MessageBox.Show("Пароль должен быть не менее 6 символов.");
                 return;
             }
 
             try
             {
-                using (var connection = new SQLiteConnection(@"Data Source=PetsDiary.db;Version=3;"))
+                using (var connection = new SQLiteConnection(database.connectionString))
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
-                    var command = new SQLiteCommand("SELECT COUNT(*) FROM users WHERE username=@username", connection);
-                    command.Parameters.AddWithValue("@username", username);
+                    var command = new SQLiteCommand("SELECT COUNT(*) FROM users WHERE login=@login", connection);
+                    command.Parameters.AddWithValue("@login", inputUsername);
 
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-
+                    int count = Convert.ToInt32(await command.ExecuteScalarAsync());
                     if (count > 0)
                     {
-                        MessageBox.Show("Пользователь с таким именем уже существует");
+                        MessageBox.Show("Пользователь с таким именем уже существует.");
                         return;
                     }
 
-                    command = new SQLiteCommand("INSERT INTO users (username, password) VALUES (@username, @password)", connection);
-                    command.Parameters.AddWithValue("@username", username);
-                    command.Parameters.AddWithValue("@password", password);
+                    command = new SQLiteCommand("INSERT INTO users (login, password) VALUES (@login, @password)", connection);
+                    command.Parameters.AddWithValue("@login", inputUsername);
+                    command.Parameters.AddWithValue("@password", inputPassword);
 
-                    command.ExecuteNonQuery();
+                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    if (rowsAffected == 0)
+                    {
+                        MessageBox.Show("Не удалось добавить пользователя в базу данных.");
+                        return;
+                    }
 
-                    MessageBox.Show("Пользователь успешно создан");
-
-                    this.Close();
+                    MessageBox.Show($"Пользователь {inputUsername} успешно зарегистрирован.");
+                    this.Hide();
+                    Form2 form2 = new Form2();
+                    form2.Show();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
-            Schedule form2 = new Schedule();
-            form2.Show();
-            this.Hide();
         }
     }
 }

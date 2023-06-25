@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SQLite;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace PetsBook
@@ -8,11 +9,12 @@ namespace PetsBook
     public partial class Form2 : Form
     {
         private readonly string connectionString = "Data Source=PetsDiary.db;Version=3;";
+        private MyDatabase database;
 
         public Form2()
         {
             InitializeComponent();
-            MyDatabase database = new MyDatabase();
+            database = new MyDatabase();
             database.CreateDatabaseIfNotExists();
         }
 
@@ -29,7 +31,6 @@ namespace PetsBook
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            
             // получение данных из формы
             string petName = PetNameTextBox.Text;
             string breed = BreedTextBox.Text;
@@ -39,49 +40,50 @@ namespace PetsBook
             string ownerSurname = OwnerSurnameTextBox.Text;
             string address = AddressTextBox.Text;
             string phone = PhoneTextBox.Text;
-            // TODO: добавление фото питомца
+
+            byte[] photo = null;
+            if (pictureBox1.Image != null)
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    pictureBox1.Image.Save(ms, pictureBox1.Image.RawFormat);
+                    photo = ms.ToArray();
+                }
+            }
 
             // сохранение данных в базу данных
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
                 SQLiteCommand command = new SQLiteCommand(connection);
-                command.CommandText = "INSERT INTO Pets (Name, Breed, DateOfBirth, Gender) " +
-                                      "VALUES (@Name, @Breed, @DateOfBirth, @Gender)";
+                command.CommandText = "INSERT INTO pets (user_id, name, breed, age, photo) " +
+                                      "VALUES (@UserId, @Name, @Breed, @Age, @Photo)";
+                command.Parameters.AddWithValue("@UserId", 1); // TODO: заменить на id текущего пользователя
                 command.Parameters.AddWithValue("@Name", petName);
                 command.Parameters.AddWithValue("@Breed", breed);
-                command.Parameters.AddWithValue("@DateOfBirth", birthDate);
-                command.Parameters.AddWithValue("@Gender", gender);
+                string age = (DateTime.Now.Year - birthDate.Year).ToString() + "-" + birthDate.Month.ToString("00");
+                command.Parameters.Add("@Age", System.Data.DbType.String).Value = age;
+                command.Parameters.AddWithValue("@Photo", photo ?? (object)DBNull.Value);
                 command.ExecuteNonQuery();
 
-                // получение id добавленной записи
-               // long petId = LastInsertRowId(command);
-                command = new SQLiteCommand(connection)
-                {
-                    CommandText = "INSERT INTO Owners (FirstName, LastName, Address, Phone) " +
-                                      "VALUES (@FirstName, @LastName, @Address, @Phone)"
-                };
+                long petId = connection.LastInsertRowId;
+
+                command = new SQLiteCommand(connection);
+                command.CommandText = "INSERT INTO owners (pet_id, first_name, last_name, address, phone) " +
+                                      "VALUES (@PetId, @FirstName, @LastName, @Address, @Phone)";
+                command.Parameters.AddWithValue("@PetId", petId);
                 command.Parameters.AddWithValue("@FirstName", ownerName);
                 command.Parameters.AddWithValue("@LastName", ownerSurname);
                 command.Parameters.AddWithValue("@Address", address);
                 command.Parameters.AddWithValue("@Phone", phone);
                 command.ExecuteNonQuery();
 
-               // // получение id добавленной записи
-               //// long ownerId = LastInsertRowId(command);
-               // command = new SQLiteCommand(connection)
-               // {
-               //     CommandText = "INSERT INTO PetOwners (PetId, OwnerId) " +
-               //                       "VALUES (@PetId, @OwnerId)"
-               // };
-               // command.Parameters.AddWithValue("@PetId", petId);
-               // command.Parameters.AddWithValue("@OwnerId", ownerId);
-               // command.ExecuteNonQuery();
+                MessageBox.Show("Данные успешно сохранены");
 
-                connection.Close();
+                // Передача id питомца в новую форму для вывода данных владельца
+                OwnerForm ownerForm = new OwnerForm((int)petId);
+                ownerForm.Show();
             }
-
-            MessageBox.Show("Данные успешно сохранены");
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)

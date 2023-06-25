@@ -9,7 +9,8 @@ namespace PetsBook
     public class MyDatabase
     {
         private SQLiteConnection _connection;
-        readonly string connectionString = "Data Source=PetsDiary.db;Version=3;";
+  
+        public string connectionString = "Data Source=PetsDiary.db;Version=3;";
         public void CreateDatabaseIfNotExists()
         {// проверка на null
             if (_connection == null)
@@ -20,63 +21,54 @@ namespace PetsBook
 
             SQLiteCommand command = new SQLiteCommand(_connection);
 
-            // создание таблицы Pets
-            command.CommandText = "CREATE TABLE IF NOT EXISTS Pets " +
-                "(Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "Name TEXT NOT NULL, " +
-                "Breed TEXT NOT NULL, " +
-                "DateOfBirth DATETIME NOT NULL, " +
-                "Gender TEXT NOT NULL, " +
-                "OwnerId INTEGER NOT NULL, " +
-                "FOREIGN KEY(OwnerId) REFERENCES Owners(Id))";
-            command.ExecuteNonQuery();
-
-            // создание таблицы расписания
-            command.CommandText = "CREATE TABLE IF NOT EXISTS Schedule(" +
-                  "Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                  "Type NVARCHAR(50) NOT NULL," +
-                  "DateAndTime DATETIME NOT NULL," +
-                  "PetId INT NOT NULL," +
-                  "FOREIGN KEY(PetId) REFERENCES Pets(Id))";
-            command.ExecuteNonQuery();
-
-            command.CommandText = "CREATE TABLE IF NOT EXISTS PetPhotos (" +
-                 "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                 "PetID INTEGER NOT NULL," +
-                 "Photo BLOB NOT NULL," +
-                 "FOREIGN KEY (PetID) REFERENCES Pets(ID))";
-            command.ExecuteNonQuery();
-
-            // создание таблицы Owners
-            command.CommandText = "CREATE TABLE IF NOT EXISTS Owners " +
-                "(Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "FirstName TEXT NOT NULL, " +
-                "LastName TEXT NOT NULL, " +
-                "Address TEXT NOT NULL, " +
-                "Phone TEXT NOT NULL)";
-            command.ExecuteNonQuery();
-
-            command.CommandText = "CREATE TABLE IF NOT EXISTS users(  " +
-                "id INTEGER PRIMARY KEY,  " +
-                "username TEXT NOT NULL UNIQUE,  " +
-                "password TEXT NOT NULL)";
-            command.ExecuteNonQuery();
+            string createUserTableQuery = @"CREATE TABLE IF NOT EXISTS users (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        login TEXT NOT NULL UNIQUE,
+                        password TEXT NOT NULL
+                    );";
+            SQLiteCommand createUserTableCommand = new SQLiteCommand(createUserTableQuery, _connection);
+            createUserTableCommand.ExecuteNonQuery();
 
 
-            // создание таблицы PetOwners
-            command.CommandText = "CREATE TABLE IF NOT EXISTS PetOwners " +
-                "(Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "PetId INTEGER NOT NULL, " +
-                "OwnerId INTEGER NOT NULL, " +
-                "FOREIGN KEY(PetId) REFERENCES Pets(Id), " +
-                "FOREIGN KEY(OwnerId) REFERENCES Owners(Id))";
-            command.ExecuteNonQuery();
+            // Создание таблицы питомцев
+            string createPetTableQuery = @"CREATE TABLE IF NOT EXISTS pets (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    name TEXT NOT NULL,
+                    breed TEXT NOT NULL,
+                    age TEXT NOT NULL,
+                    photo BLOB,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+                );";
+            SQLiteCommand createPetTableCommand = new SQLiteCommand(createPetTableQuery, _connection);
+            createPetTableCommand.ExecuteNonQuery();
 
-            if(_connection != null)
-            {
-                _connection.Close();
-            }
+            string createOwnersTableQuery = @"CREATE TABLE IF NOT EXISTS owners (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    pet_id INTEGER NOT NULL,
+                    first_name TEXT NOT NULL,
+                    last_name TEXT NOT NULL,
+                    address TEXT NOT NULL,
+                    phone TEXT NOT NULL,
+                    FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE
+                );";
+            SQLiteCommand createOwnersTableCommand = new SQLiteCommand(createOwnersTableQuery, _connection);
+            createOwnersTableCommand.ExecuteNonQuery();
+
+
+            // Создание таблицы уведомлений
+            string createNotificationTableQuery = @"CREATE TABLE IF NOT EXISTS notifications (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                pet_id INTEGER NOT NULL,
+                type TEXT NOT NULL,
+                datetime TEXT NOT NULL,
+                is_done INTEGER NOT NULL DEFAULT 0,
+                FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE
+            );";
+            SQLiteCommand createNotificationTableCommand = new SQLiteCommand(createNotificationTableQuery, _connection);
+            createNotificationTableCommand.ExecuteNonQuery();
         }
+          
     }
     
 }
