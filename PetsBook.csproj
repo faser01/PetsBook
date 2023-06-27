@@ -83,6 +83,12 @@
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAddOwner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAddOwner.Designer.cs">
+      <DependentUpon>FormAddOwner.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormAddPet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,12 +110,6 @@
     </Compile>
     <Compile Include="Notifications.cs" />
     <Compile Include="Owner.cs" />
-    <Compile Include="OwnerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OwnerForm.Designer.cs">
-      <DependentUpon>OwnerForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Pet.cs" />
     <Compile Include="PetsDatabase.cs" />
     <Compile Include="Program.cs" />
@@ -123,6 +123,9 @@
     <EmbeddedResource Include="Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormAddOwner.resx">
+      <DependentUpon>FormAddOwner.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAddPet.resx">
       <DependentUpon>FormAddPet.cs</DependentUpon>
     </EmbeddedResource>
@@ -131,9 +134,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="notificationForm.resx">
       <DependentUpon>notificationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OwnerForm.resx">
-      <DependentUpon>OwnerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

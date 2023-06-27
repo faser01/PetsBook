@@ -8,28 +8,27 @@ namespace PetsBook
 
     public class MyDatabase
     {
-        private SQLiteConnection _connection;
-
+       
   
         public string connectionString = "Data Source=PetsDiary.db;Version=3;";
         internal SQLiteConnection connection;
 
         public void CreateDatabaseIfNotExists()
         {// проверка на null
-            if (_connection == null)
+            if (connection == null)
             {
-                _connection = new SQLiteConnection(connectionString);
-                _connection.Open();
+                connection = new SQLiteConnection(connectionString);
+                connection.Open();
             }
 
-            SQLiteCommand command = new SQLiteCommand(_connection);
+            SQLiteCommand command = new SQLiteCommand(connection);
 
             string createUserTableQuery = @"CREATE TABLE IF NOT EXISTS users (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         login TEXT NOT NULL UNIQUE,
                         password TEXT NOT NULL
                     );";
-            SQLiteCommand createUserTableCommand = new SQLiteCommand(createUserTableQuery, _connection);
+            SQLiteCommand createUserTableCommand = new SQLiteCommand(createUserTableQuery, connection);
             createUserTableCommand.ExecuteNonQuery();
 
 
@@ -43,7 +42,7 @@ namespace PetsBook
                     photo BLOB,
                     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
                 );";
-            SQLiteCommand createPetTableCommand = new SQLiteCommand(createPetTableQuery, _connection);
+            SQLiteCommand createPetTableCommand = new SQLiteCommand(createPetTableQuery, connection);
             createPetTableCommand.ExecuteNonQuery();
 
             string createOwnersTableQuery = @"CREATE TABLE IF NOT EXISTS owners (
@@ -55,7 +54,7 @@ namespace PetsBook
                     phone TEXT NOT NULL,
                     FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE
                 );";
-            SQLiteCommand createOwnersTableCommand = new SQLiteCommand(createOwnersTableQuery, _connection);
+            SQLiteCommand createOwnersTableCommand = new SQLiteCommand(createOwnersTableQuery, connection);
             createOwnersTableCommand.ExecuteNonQuery();
 
 
@@ -68,7 +67,7 @@ namespace PetsBook
                 is_done INTEGER NOT NULL DEFAULT 0,
                 FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE
             );";
-            SQLiteCommand createNotificationTableCommand = new SQLiteCommand(createNotificationTableQuery, _connection);
+            SQLiteCommand createNotificationTableCommand = new SQLiteCommand(createNotificationTableQuery, connection);
             createNotificationTableCommand.ExecuteNonQuery();
         }
           

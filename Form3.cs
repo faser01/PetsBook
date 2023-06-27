@@ -12,7 +12,7 @@ namespace PetsBook
         private readonly List <Pet> pets;
         private List <Owner> owners;
         private List <Notifications> notifications;
-        private SQLiteConnection _connection;
+        private SQLiteConnection connection;
         private int userId;
 
         public Form3(List<Pet> pets, List<Owner> owners, List <Notifications> notifications, SQLiteConnection connection, int userId)
@@ -64,14 +64,14 @@ namespace PetsBook
 
         private void buttonAddPet_Click(object sender, EventArgs e)
         {
-            using (var formAddPet = new FormAddPet(pets, _connection, userId))
+            using (var formAddPet = new FormAddPet(pets, connection, userId))
             {
                 formAddPet.ShowDialog();
                 DisplayPets();
             }
         }
 
-        private void buttonEditPet_Click(object sender, EventArgs e)
+        private void ButtonEditPet_Click(object sender, EventArgs e)
         {
             if (dataGridViewPets.SelectedRows.Count > 0)
             {
